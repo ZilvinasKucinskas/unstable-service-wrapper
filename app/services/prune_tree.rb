@@ -4,7 +4,7 @@ class PruneTree
   INDICATORS_KEY = 'indicators'.freeze
   INDICATOR_ID_KEY = 'id'.freeze
 
-  def initialize(tree, indicator_ids)
+  def initialize(tree, indicator_ids = [])
     # Note: Pruning mutates tree
     # If you want to make a deep copy of tree:
     # @tree = Marshal.load(Marshal.dump(tree)) # slow operation
