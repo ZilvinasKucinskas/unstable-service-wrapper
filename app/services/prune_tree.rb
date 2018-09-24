@@ -2,6 +2,7 @@ class PruneTree
   SUB_THEMES_KEY = 'sub_themes'.freeze
   CATEGORIES_KEY = 'categories'.freeze
   INDICATORS_KEY = 'indicators'.freeze
+  INDICATOR_ID_KEY = 'id'.freeze
 
   def initialize(tree, indicator_ids)
     # Note: Pruning mutates tree
@@ -12,16 +13,30 @@ class PruneTree
   end
 
   def call
-    tree.keep_if do |theme|
-      theme[SUB_THEMES_KEY].keep_if do |sub_theme|
-        sub_theme[CATEGORIES_KEY].keep_if do |category|
-          category[INDICATORS_KEY].keep_if { |indicator| indicators.include?(indicator['id']) }.present?
-        end.present?
-      end.present?
-    end
+    pruned_tree
   end
 
   private
+
+  def pruned_tree
+    tree.keep_if { |theme| pruned_sub_themes(theme[SUB_THEMES_KEY]).present? }
+  end
+
+  def pruned_sub_themes(sub_themes)
+    sub_themes.keep_if { |sub_theme| pruned_categories(sub_theme[CATEGORIES_KEY]).present? }
+  end
+
+  def pruned_categories(categories)
+    categories.keep_if { |category| pruned_indicators(category[INDICATORS_KEY]).present? }
+  end
+
+  def pruned_indicators(indicators)
+    indicators.keep_if { |indicator| indicator_found?(indicator) }
+  end
+
+  def indicator_found?(indicator)
+    indicators.include?(indicator[INDICATOR_ID_KEY])
+  end
 
   attr_reader :tree, :indicators
 end
