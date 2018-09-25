@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/ZilvinasKucinskas/unstable-service-wrapper.svg?branch=master)](https://travis-ci.org/ZilvinasKucinskas/unstable-service-wrapper)
+
 # Description
 
 Client has unstable service which sometimes fail. This wrapper adds some resiliency to upstream problems and also adds additional filtering capabilities.
