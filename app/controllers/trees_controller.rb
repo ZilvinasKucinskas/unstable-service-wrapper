@@ -1,6 +1,6 @@
 class TreesController < ApplicationController
   def show
-    return malformed_parameters_response unless correct_indicators?
+    validate_indicators
 
     response = Api::UnstableTree.new(params[:name]).call
 
@@ -14,15 +14,15 @@ class TreesController < ApplicationController
 
   private
 
+  def validate_indicators
+    raise ExceptionHandler::MalformedParameters unless correct_indicators?
+  end
+
   def indicators
     params[:indicator_ids] || []
   end
 
   def correct_indicators?
     indicators.is_a?(Array) && indicators.all? { |element| element !~ /\D/ }
-  end
-
-  def malformed_parameters_response
-    json_response({ error: I18n.t('errors.malformed_parameters') }, :bad_request)
   end
 end
