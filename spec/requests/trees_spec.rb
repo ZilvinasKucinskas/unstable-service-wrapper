@@ -2,17 +2,13 @@ require 'rails_helper'
 
 RSpec.describe 'Trees API', type: :request do
   describe 'GET /tree/:name' do
-    let(:url) { "#{Api::UnstableTree.base_uri}#{Api::UnstableTree::TREE_PATH}#{name}" }
-    let(:headers) { { 'Content-Type' => 'application/json' } }
-    let(:params) { {} }
-    let(:tree) { JSON.parse(file_fixture('original_tree.json').read) }
+    include_context 'unstable tree api stubs and data'
 
+    let(:params) { {} }
     subject(:request) { get("/tree/#{name}", params: params) }
 
     context 'with existing tree name' do
-      let(:name) { 'input' }
-
-      before { stub_request(:get, url).to_return(body: tree.to_json, status: 200, headers: headers) }
+      before { stub_successful_response }
 
       context 'with indicator_ids is not provided' do
         before { request }
@@ -23,7 +19,6 @@ RSpec.describe 'Trees API', type: :request do
 
       context 'with example indicator_ids' do
         let(:params) { { indicator_ids: [1, 32, 31] } }
-        let(:pruned_tree) { JSON.parse(file_fixture('pruned_example_tree.json').read) }
 
         before { request }
 
@@ -54,11 +49,8 @@ RSpec.describe 'Trees API', type: :request do
       end
 
       context 'when upstream server fails' do
-        let(:name) { 'input' }
-        let(:upstream_failure_body) { 'Internal derper error. Nobody has been notified.' }
-
         before do
-          stub_request(:get, url).to_return(body: upstream_failure_body, status: 500, headers: headers)
+          stub_upstream_failure
           request
         end
 
@@ -68,11 +60,8 @@ RSpec.describe 'Trees API', type: :request do
     end
 
     context 'with non-existent tree name' do
-      let(:name) { 'asd' }
-      let(:not_found_body) { { 'error' => 'Can\'t find that tree' } }
-
       before do
-        stub_request(:get, url).to_return(body: not_found_body.to_json, status: 404, headers: headers)
+        stub_not_found_response
         request
       end
 
