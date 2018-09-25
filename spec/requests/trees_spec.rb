@@ -10,7 +10,7 @@ RSpec.describe 'Trees API', type: :request do
     context 'with existing tree name' do
       before { stub_successful_response }
 
-      context 'with indicator_ids is not provided' do
+      context 'with no indicator_ids' do
         before { request }
 
         it { expect(response).to have_http_status(200) }
@@ -26,10 +26,10 @@ RSpec.describe 'Trees API', type: :request do
         it { expect(json_response).to match_unordered_json(pruned_tree) }
       end
 
-      context 'when indicator_ids is not an array' do
+      context 'with illegal indicator_ids' do
         let(:bad_request_response) { { 'error' => I18n.t('errors.malformed_parameters') } }
 
-        context 'with string' do
+        context 'when given string' do
           let(:params) { { indicator_ids: 'incorrect' } }
 
           before { request }
@@ -38,7 +38,7 @@ RSpec.describe 'Trees API', type: :request do
           it { expect(json_response).to include_json(bad_request_response) }
         end
 
-        context 'with array of words' do
+        context 'when given array of words' do
           let(:params) { { indicator_ids: %w[incorrect type] } }
 
           before { request }
