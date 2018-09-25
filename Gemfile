@@ -20,6 +20,8 @@ gem 'bootsnap', '>= 1.1.0', require: false
 
 # Makes http fun again!
 gem 'httparty'
+# Retriable is a simple DSL to retry failed code blocks with randomized exponential backoff time intervals
+gem 'retriable'
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'

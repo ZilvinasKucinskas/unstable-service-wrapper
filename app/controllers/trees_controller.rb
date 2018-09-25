@@ -9,8 +9,6 @@ class TreesController < ApplicationController
       json_response(PruneTree.new(response.parsed_response, indicators.map(&:to_i)).call)
     when 404
       json_response(response.parsed_response, :not_found)
-    else
-      json_response({ error: I18n.t('errors.upstream_failure') }, :internal_server_error)
     end
   end
 
