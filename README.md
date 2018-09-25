@@ -8,7 +8,9 @@ You can check response in a browser by clicking [here](https://unstable-service-
 
 ## Prerequisites
 
+* [Recommended] [rbenv](https://github.com/rbenv/rbenv)
 * Ruby 2.5.1
+* [Bundler](https://bundler.io)
 
 ## Installation
 
