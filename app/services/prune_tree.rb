@@ -13,7 +13,7 @@ class PruneTree
   end
 
   def call
-    pruned_tree
+    indicators.present? ? pruned_tree : tree
   end
 
   private

@@ -8,9 +8,8 @@ RSpec.describe PruneTree, type: :service do
 
     context 'with no indicators' do
       let(:indicators) { [] }
-      let(:empty_tree) { [] }
 
-      it { is_expected.to match_unordered_json(empty_tree) }
+      it { is_expected.to match_unordered_json(tree) }
     end
 
     context 'with original example' do
@@ -29,6 +28,13 @@ RSpec.describe PruneTree, type: :service do
       end
 
       it { is_expected.to match_unordered_json(tree) }
+    end
+
+    context 'with non-existent indicator' do
+      let(:indicators) { [999_999] }
+      let(:empty_tree) { [] }
+
+      it { is_expected.to match_unordered_json(empty_tree) }
     end
   end
 end
