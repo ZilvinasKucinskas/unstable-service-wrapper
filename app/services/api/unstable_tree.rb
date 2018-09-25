@@ -15,7 +15,7 @@ module Api
 
     def call
       Retriable.retriable(base_interval: BASE_INTERVAL, tries: TRIES) do
-        response = self.class.get(@path, format: :json)
+        response = self.class.get(path, format: :json)
         raise ExceptionHandler::UpstreamFailure unless VALID_RESPONSE_CODES.include?(response.code)
         response
       end
