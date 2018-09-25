@@ -30,4 +30,6 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  errors:
+    upstream_failure: 'Something bad happened. Probably client service is unresponsive.'
+    malformed_parameters: 'Malformed parameters.'
